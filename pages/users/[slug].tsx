@@ -238,7 +238,7 @@ const User: React.FC<UserProps> = ({ user, slug }) => {
                                     </label>
                                 )}
                                 <h3 className={styles.user_logo}>
-                                    {!user?.image?.url && user?.name[0]}
+                                    {!user?.image?.url ? user?.image?.url : user?.name[0]}
                                 </h3>
                             </div>
 

@@ -44,11 +44,14 @@
     margin-right: 20px;
     height: 26px;
     text-decoration: none;
-    right: 100px;
     font-weight: 400;
     font-size: 16px;
     line-height: 26px;
     color: #000000;
+    width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: right;
 }
 
 .user_icon {
@@ -85,8 +88,18 @@
     transition: 0.25s;
 }
 
+@media (max-width: 800px) {
+    .user_name {
+        width: 150px;
+    }
+}
+
 @media (max-width: 600px) {
     .desc {
         display: none;
+    }
+
+    .user_name {
+        width: 100px;
     }
 }

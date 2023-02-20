@@ -11,6 +11,7 @@
     font-size: 16px;
     line-height: 26px;
     color: #f3f3f3;
+    cursor: pointer;
 }
 
 .auth_btn:hover {

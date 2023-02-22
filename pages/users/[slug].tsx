@@ -114,7 +114,6 @@ const User: React.FC<UserProps> = ({ user }) => {
 
     // const changePhoto = () => {
     //     const fileData = new FormData()
-    //     // '001.png;type=image/png'
     //     fileData.append('file', image)
 
     //     mutate(

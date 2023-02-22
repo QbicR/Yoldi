@@ -25,7 +25,7 @@ const Header: React.FC = () => {
     useEffect(() => {
         if (data) {
             setUser(data)
-            setLetter(data?.name)
+            setLetter(data?.name[0])
         }
     }, [data])
 
@@ -46,6 +46,8 @@ const Header: React.FC = () => {
             trigger()
         }
     }, [token])
+
+    console.log(!user?.image?.url && user?.name[0])
 
     return (
         <div className={styles.navbar}>
@@ -112,15 +114,17 @@ const Header: React.FC = () => {
                     </button>
                 ) : (
                     <div onClick={() => push(`/users/${user?.slug}`)} className={styles.user_info}>
-                        <>
-                            <h4 className={styles.user_name}>{user?.name}</h4>
-                            <div
-                                className={styles.user_icon}
-                                style={{ backgroundImage: `url(${user?.image?.url})` }}
-                            >
-                                {!user?.image?.url && user?.name[0]}
-                            </div>
-                        </>
+                        {user && (
+                            <>
+                                <h4 className={styles.user_name}>{user?.name}</h4>
+                                <div
+                                    className={styles.user_icon}
+                                    style={{ backgroundImage: `url(${user?.image?.url})` }}
+                                >
+                                    {!user?.image?.url && user?.name[0]}
+                                </div>
+                            </>
+                        )}
                     </div>
                 )}
             </div>

@@ -8,7 +8,7 @@ interface LayoutProps {
     children: JSX.Element[]
 }
 
-const Layout: React.FC<LayoutProps> = ({ children }: any) => {
+const Layout: React.FC<LayoutProps> = ({ children }) => {
     const { route } = useRouter()
     const isHide = route === '/login' || route === '/register'
 

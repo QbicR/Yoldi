@@ -1,4 +1,4 @@
-export const fetcherWithToken = (url: string, token?: any) =>
+export const fetcherWithToken = (url: string, token?: string | null) =>
     fetch(url, {
         method: 'GET',
         headers: {

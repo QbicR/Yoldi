@@ -18,8 +18,9 @@ const Header: React.FC = () => {
         setToken(localStorage.getItem('token'))
     }, [route])
 
-    const { data } = useSWR('https://frontend-test-api.yoldi.agency/api/profile', (url: string) =>
-        fetcherWithToken(url, token),
+    const { data } = useSWR<UserType>(
+        'https://frontend-test-api.yoldi.agency/api/profile',
+        (url: string) => fetcherWithToken(url, token),
     )
 
     useEffect(() => {

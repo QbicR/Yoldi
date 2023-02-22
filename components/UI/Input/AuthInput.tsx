@@ -4,7 +4,7 @@ import styles from './AuthInput.module.css'
 interface InputProps {
     placeholder: string
     value?: string
-    onChange?: (e: any) => void
+    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
     type?: string
 }
 

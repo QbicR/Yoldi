@@ -1,6 +1,6 @@
 export type ResponseType = {
-    statusCode?: number
     value?: string
+    statusCode?: number
     message?: string
     error?: string
 }

@@ -6,7 +6,7 @@ import Head from 'next/head'
 import AuthInput from '@/components/UI/Input/AuthInput'
 import AuthButton from '@/components/UI/button/AuthButton'
 import styles from '../styles/Auth.module.css'
-import { mutate } from 'swr'
+import { ResponseType } from '@/types/types'
 
 const Auth: React.FC = () => {
     const [email, setEmail] = useState<string>('')
@@ -14,11 +14,11 @@ const Auth: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<string>('')
     const [hidePassword, setHidePassword] = useState<boolean>(true)
-    const [response, setResponse] = useState<any>({})
+    const [response, setResponse] = useState<ResponseType>()
 
     const { push } = useRouter()
 
-    const sendResuest = async (url: string, { arg }: any) => {
+    const sendResuest = async (url: string, { arg }: Record<string, string>) => {
         await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', accept: 'application/json' },
@@ -37,12 +37,14 @@ const Auth: React.FC = () => {
     }
 
     useEffect(() => {
-        if (response.value) {
+        if (response?.value) {
             localStorage.setItem('token', response.value)
             setError('')
             setLoading(false)
             push('/users')
-        } else {
+        }
+
+        if (response?.message) {
             setError(response.message)
             setLoading(false)
         }

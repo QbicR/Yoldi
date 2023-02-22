@@ -3,14 +3,18 @@ import { useRouter } from 'next/router'
 import Head from 'next/head'
 
 import styles from '../../styles/User.module.css'
-import Modal from '@/components/Modal'
+import Modal from '@/components/UI/modal/Modal'
 import { UserType } from '@/types/types'
 import useSWR, { useSWRConfig } from 'swr'
 import { fetcherWithToken } from '@/utils/fetcherWithToken'
 import ErrorPage from '../404'
 import { fetcher } from '@/utils/fetcher'
 
-export const getServerSideProps = async (context: any) => {
+type ContextType = {
+    params: { slug: string }
+}
+
+export const getServerSideProps = async (context: ContextType) => {
     const { slug } = context.params
 
     const res = await fetch(`https://frontend-test-api.yoldi.agency/api/user/${slug}`)
@@ -33,7 +37,7 @@ const User: React.FC<UserProps> = ({ user }) => {
     const [newDesc, setNewDesc] = useState<string>('')
     const [crutch, setСrutch] = useState(false)
 
-    const [image, setImage] = useState<any>()
+    const [image, setImage] = useState()
 
     const { push, route } = useRouter()
     const { mutate } = useSWRConfig()
@@ -42,7 +46,7 @@ const User: React.FC<UserProps> = ({ user }) => {
         setСrutch((visible && window.innerWidth <= 600) || (visible && window.innerHeight <= 660))
     }, [visible])
 
-    const { data, isValidating } = useSWR(
+    const { data, isValidating } = useSWR<UserType>(
         `https://frontend-test-api.yoldi.agency/api/profile`,
         (url: string) => fetcherWithToken(url, token),
     )
@@ -85,13 +89,17 @@ const User: React.FC<UserProps> = ({ user }) => {
 
     const closeModal = () => {
         setVisible(!visible)
-        setNewName(data?.name)
-        setNewSlug(data?.slug)
-        setNewDesc(data?.description)
+        if (data) {
+            setNewName(data?.name)
+            setNewSlug(data?.slug)
+            setNewDesc(data?.description)
+        }
     }
 
-    const changeProfile = () => {
-        mutate(
+    const userData = { name: newName.trim(), slug: newSlug.trim(), description: newDesc.trim() }
+
+    const changeProfile = async () => {
+        await mutate(
             `https://frontend-test-api.yoldi.agency/api/profile`,
             fetcher(`https://frontend-test-api.yoldi.agency/api/profile`, {
                 method: 'PATCH',
@@ -100,11 +108,7 @@ const User: React.FC<UserProps> = ({ user }) => {
                     'X-API-KEY': String(token),
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    name: newName.trim(),
-                    slug: newSlug.trim(),
-                    description: newDesc.trim(),
-                }),
+                body: JSON.stringify(userData),
             }),
         )
         setVisible(!visible)

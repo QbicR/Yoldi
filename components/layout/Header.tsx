@@ -25,6 +25,8 @@ const Header: React.FC = () => {
     useEffect(() => {
         if (data) {
             setUser(data)
+        }
+        if (data?.name) {
             setLetter(data?.name[0])
         }
     }, [data])
@@ -46,8 +48,6 @@ const Header: React.FC = () => {
             trigger()
         }
     }, [token])
-
-    console.log(!user?.image?.url && user?.name[0])
 
     return (
         <div className={styles.navbar}>
@@ -121,7 +121,7 @@ const Header: React.FC = () => {
                                     className={styles.user_icon}
                                     style={{ backgroundImage: `url(${user?.image?.url})` }}
                                 >
-                                    {!user?.image?.url && user?.name[0]}
+                                    {!user?.image?.url && letter}
                                 </div>
                             </>
                         )}

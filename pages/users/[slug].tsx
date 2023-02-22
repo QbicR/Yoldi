@@ -38,6 +38,10 @@ const User: React.FC<UserProps> = ({ user }) => {
     const { push, route } = useRouter()
     const { mutate } = useSWRConfig()
 
+    useEffect(() => {
+        setСrutch((visible && window.innerWidth <= 600) || (visible && window.innerHeight <= 660))
+    }, [visible])
+
     const { data, isValidating } = useSWR(
         `https://frontend-test-api.yoldi.agency/api/profile`,
         (url: string) => fetcherWithToken(url, token),
@@ -132,10 +136,6 @@ const User: React.FC<UserProps> = ({ user }) => {
     if (user.statusCode === 404) {
         return <ErrorPage />
     }
-
-    useEffect(() => {
-        setСrutch((visible && window.innerWidth <= 600) || (visible && window.innerHeight <= 660))
-    }, [visible])
 
     return (
         <>

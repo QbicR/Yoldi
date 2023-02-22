@@ -170,10 +170,12 @@
 @media (max-width: 600px) or (max-height: 660px) {
     .modal {
         position: absolute;
-        top: 80px;
+        background: rgba(0, 0, 0, 0);
+        top: 0;
     }
 
     .modal_active {
+        margin-top: 80px;
         height: calc(100vh - 80px);
         width: 100%;
         border-radius: 0;

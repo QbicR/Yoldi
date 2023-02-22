@@ -114,7 +114,7 @@ const Header: React.FC = () => {
                                 className={styles.user_icon}
                                 style={{ backgroundImage: `url(${user?.image?.url})` }}
                             >
-                                {!user?.image?.url && user?.name[0]}
+                                {!user?.image?.url ? user?.image?.url : user?.name[0]}
                             </div>
                         </>
                     </div>

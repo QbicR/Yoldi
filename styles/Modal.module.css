@@ -169,7 +169,8 @@
 
 @media (max-width: 600px) {
     .modal {
-        position: sticky;
+        position: absolute;
+        top: 80px;
     }
 
     .modal_active {
@@ -195,7 +196,8 @@
 
 @media (max-height: 660px) {
     .modal {
-        position: sticky;
+        position: absolute;
+        top: 80px;
     }
 
     .modal_active {

@@ -62,7 +62,7 @@ const Modal: React.FC<ModalProps> = ({
                         <input
                             className={styles.modal_input_address}
                             placeholder={'Адрес профиля'}
-                            value={newSlug.trim()}
+                            value={newSlug?.trim()}
                             onChange={(e) => setNewSlug(e.target.value)}
                         />
                     </div>

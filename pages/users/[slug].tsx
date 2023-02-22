@@ -33,6 +33,8 @@ const User: React.FC<UserProps> = ({ user }) => {
     const [newSlug, setNewSlug] = useState<string>('')
     const [newDesc, setNewDesc] = useState<string>('')
 
+    const [image, setImage] = useState<any>()
+
     const { push, route } = useRouter()
     const { mutate } = useSWRConfig()
 
@@ -99,33 +101,23 @@ const User: React.FC<UserProps> = ({ user }) => {
         push('/login')
     }
 
-    if (user.statusCode === 404) {
-        return <ErrorPage />
-    }
+    // const changePhoto = () => {
+    //     const fileData = new FormData()
+    //     // '001.png;type=image/png'
+    //     fileData.append('file', image)
 
-    // "@@d.png;type=image/png"
-
-    const changePhoto = (file: any) => {
-        console.log(file.target.files[0])
-        // file = e.target.files[0]
-
-        const fileData = new FormData()
-        fileData.append('file', file.target.files[0])
-
-        console.log(fileData.get('file'))
-
-        // mutate(
-        //     `https://frontend-test-api.yoldi.agency/api/image`,
-        //     fetcher(`https://frontend-test-api.yoldi.agency/api/image`, {
-        //         method: 'POST',
-        //         headers: {
-        //             accept: 'application/json',
-        //             'Content-Type': 'multipart/form-data',
-        //         },
-        //         body: fileData,
-        //     }),
-        // )
-    }
+    //     mutate(
+    //         `https://frontend-test-api.yoldi.agency/api/image`,
+    //         fetcher(`https://frontend-test-api.yoldi.agency/api/image`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 accept: 'application/json',
+    //                 'Content-Type': 'multipart/form-data',
+    //             },
+    //             body: fileData,
+    //         }),
+    //     )
+    // }
 
     // Простите за этот костыль =) я не смог в CSS
 
@@ -133,6 +125,10 @@ const User: React.FC<UserProps> = ({ user }) => {
     // useEffect(() => {
     //     setWTF((visible && window.innerWidth <= 600) || (visible && window.innerHeight <= 660))
     // }, [visible])
+
+    if (user.statusCode === 404) {
+        return <ErrorPage />
+    }
 
     return (
         <>
@@ -149,13 +145,13 @@ const User: React.FC<UserProps> = ({ user }) => {
                     >
                         {!guest && (
                             <div className={styles.profile_image}>
-                                {user?.cover?.url ? (
+                                {!user?.cover?.url ? (
                                     <label>
                                         <input
                                             type="file"
                                             name="file"
                                             hidden
-                                            onChange={(e) => changePhoto(e)}
+                                            // onChange={(e) => setImage(e.target.files[0])}
                                         />
                                         <div className={styles.input_file}>
                                             <svg

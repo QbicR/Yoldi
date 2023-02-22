@@ -174,8 +174,13 @@
         top: 0;
     }
 
-    .modal_active {
+    .modal.open {
         margin-top: 80px;
+    }
+
+    .modal_active {
+        position: absolute;
+        top: 0;
         height: calc(100vh - 80px);
         width: 100%;
         border-radius: 0;

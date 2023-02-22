@@ -1,46 +1,54 @@
 import React, { useEffect, useState } from 'react'
-import useSWR, { useSWRConfig } from 'swr'
 import { useRouter } from 'next/router'
+import useSWRMutation from 'swr/mutation'
+import useSWR from 'swr'
 
-import { UserType } from '@/types/types'
 import styles from './Header.module.css'
-import { fetcher } from '@/utils/fetcher'
+import { UserType } from '@/types/types'
+import { fetcherWithToken } from '@/utils/fetcherWithToken'
 
 const Header: React.FC = () => {
-    const [token, setToken] = useState<string | null>('')
+    const [token, setToken] = useState<string | null>()
     const [user, setUser] = useState<UserType>()
 
     const { push, route } = useRouter()
-    const { mutate } = useSWRConfig()
 
     useEffect(() => {
         setToken(localStorage.getItem('token'))
     }, [route])
 
-    useEffect(() => {
-        mutate(
-            'https://frontend-test-api.yoldi.agency/api/profile',
-            fetcher('https://frontend-test-api.yoldi.agency/api/profile', {
-                method: 'GET',
-                headers: { accept: 'application/json', 'X-API-KEY': String(token) },
-            }),
-        )
-    }, [token])
-
-    const { data } = useSWR('https://frontend-test-api.yoldi.agency/api/profile', fetcher)
+    const { data } = useSWR('https://frontend-test-api.yoldi.agency/api/profile', (url: string) =>
+        fetcherWithToken(url, token),
+    )
 
     useEffect(() => {
-        if (data?.name) {
-            setUser(data)
-        }
+        setUser(data)
     }, [data])
+
+    const sendResuest = async (url: string) => {
+        await fetch(url, {
+            method: 'GET',
+            headers: { accept: 'application/json', 'X-API-KEY': token! },
+        }).then(async (res) => setUser(await res.json()))
+    }
+
+    const { trigger } = useSWRMutation(
+        'https://frontend-test-api.yoldi.agency/api/profile',
+        sendResuest,
+    )
+
+    useEffect(() => {
+        if (token) {
+            trigger()
+        }
+    }, [token])
 
     return (
         <div className={styles.navbar}>
             <div className={styles.navbar_container}>
                 <div className={styles.logo}>
                     <svg
-                        onClick={() => push('/')}
+                        onClick={() => push('/users')}
                         className={styles.icon}
                         width="80"
                         height="50"

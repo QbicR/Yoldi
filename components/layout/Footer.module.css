@@ -11,7 +11,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    max-width: 317px;
+    padding: 0 15px;
+    max-width: 347px;
 }
 
 .log_in h4 {

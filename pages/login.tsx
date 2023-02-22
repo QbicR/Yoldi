@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import useSWR, { useSWRConfig } from 'swr'
+import useSWRMutation from 'swr/mutation'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 
 import AuthInput from '@/components/UI/Input/AuthInput'
 import AuthButton from '@/components/UI/button/AuthButton'
 import styles from '../styles/Auth.module.css'
-import { fetcher } from '@/utils/fetcher'
+import { mutate } from 'swr'
 
 const Auth: React.FC = () => {
     const [email, setEmail] = useState<string>('')
@@ -14,43 +14,39 @@ const Auth: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<string>('')
     const [hidePassword, setHidePassword] = useState<boolean>(true)
+    const [response, setResponse] = useState<any>({})
 
     const { push } = useRouter()
-    const { mutate } = useSWRConfig()
 
-    const login = () => {
-        mutate(
-            'https://frontend-test-api.yoldi.agency/api/auth/login',
-            fetcher('https://frontend-test-api.yoldi.agency/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', accept: 'application/json' },
-                body: JSON.stringify({ email, password }),
-            }),
-        )
-        setLoading(true)
+    const sendResuest = async (url: string, { arg }: any) => {
+        await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', accept: 'application/json' },
+            body: JSON.stringify(arg),
+        }).then(async (res) => setResponse(await res.json()))
     }
 
-    const { data } = useSWR('https://frontend-test-api.yoldi.agency/api/auth/login', fetcher)
+    const { trigger } = useSWRMutation(
+        'https://frontend-test-api.yoldi.agency/api/auth/login',
+        sendResuest,
+    )
 
-    const dataMessage =
-        data?.message &&
-        data?.message !== 'Unauthorized' &&
-        data?.message !== 'Cannot GET /api/auth/login'
+    const login = () => {
+        setLoading(true)
+        trigger({ email, password })
+    }
 
     useEffect(() => {
-        if (data?.value) {
+        if (response.value) {
+            localStorage.setItem('token', response.value)
             setError('')
-            localStorage.setItem('token', data.value)
-            push('/')
+            setLoading(false)
+            push('/users')
+        } else {
+            setError(response.message)
             setLoading(false)
         }
-
-        if (dataMessage) {
-            setError(data.message)
-            setPassword('')
-            setLoading(false)
-        }
-    }, [data])
+    }, [response])
 
     return (
         <>
@@ -58,6 +54,7 @@ const Auth: React.FC = () => {
                 <title>Вход в Yoldi Agency</title>
                 <meta property="og:title" content="Вход в Yoldi Agency" key="title" />
             </Head>
+
             <div className={styles.auth_page}>
                 <div className={styles.auth_form}>
                     <h1 className={styles.auth_title}>Вход в Yoldi Agency</h1>
@@ -76,7 +73,7 @@ const Auth: React.FC = () => {
                             />
                         </svg>
                         <AuthInput
-                            onChange={(e) => setEmail(e.target.value)}
+                            onChange={(e) => setEmail(e.target.value.trim())}
                             placeholder={'E-mail'}
                             type="text"
                             value={email}
@@ -97,7 +94,7 @@ const Auth: React.FC = () => {
                             />
                         </svg>
                         <AuthInput
-                            onChange={(e) => setPassword(e.target.value)}
+                            onChange={(e) => setPassword(e.target.value.trim())}
                             placeholder={'Пароль'}
                             type={hidePassword ? 'password' : 'text'}
                             value={password}

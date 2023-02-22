@@ -2,10 +2,10 @@ import React from 'react'
 import styles from './AuthButton.module.css'
 
 interface AuthButtonProps {
-    text: string
     disabled: boolean
     onClick: () => void
     loading: boolean
+    text: string
 }
 
 const AuthButton: React.FC<AuthButtonProps> = (props) => {

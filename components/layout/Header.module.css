@@ -103,3 +103,9 @@
         width: 100px;
     }
 }
+
+@media (max-width: 320px) {
+    .user_name {
+        width: 60px;
+    }
+}

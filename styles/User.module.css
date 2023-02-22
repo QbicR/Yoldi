@@ -72,6 +72,11 @@
     font-size: 36px;
 }
 
+.guest_logo {
+    font-weight: 400;
+    font-size: 36px;
+}
+
 .input_icon {
     display: none;
     width: 100px;

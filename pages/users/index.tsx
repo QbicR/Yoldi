@@ -1,14 +1,19 @@
 import React from 'react'
 import useSWR from 'swr'
-
-import styles from '../styles/UsersList.module.css'
-import { fetcher } from '@/utils/fetcher'
 import { useRouter } from 'next/router'
+
+import styles from '../../styles/UsersList.module.css'
+import { fetcher } from '@/utils/fetcher'
+import Spinner from '@/components/spinner/Spinner'
 
 const UsersList: React.FC = () => {
     const { push } = useRouter()
 
     const { data: users } = useSWR('https://frontend-test-api.yoldi.agency/api/user', fetcher)
+
+    if (!users) {
+        return <Spinner />
+    }
 
     return (
         <div className={styles.users_page}>

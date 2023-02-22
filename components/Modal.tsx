@@ -6,11 +6,11 @@ interface ModalProps {
     newName: string
     newSlug: string
     newDesc: string
-    setNewName: any
-    setNewSlug: any
-    setNewDesc: any
-    closeModal: any
-    changeProfile: any
+    setNewName: (e: string) => void
+    setNewSlug: (e: string) => void
+    setNewDesc: (e: string) => void
+    closeModal: () => void
+    changeProfile: () => void
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -32,8 +32,7 @@ const Modal: React.FC<ModalProps> = ({
 
     return (
         <div className={rootClasses.join(' ')}>
-            {/* <div onClick={(event) => event.stopPropagation()}> */}
-            <div className={styles.modal_active}>
+            <div className={styles.modal_active} onClick={(event) => event.stopPropagation()}>
                 <h1 className={styles.modal_header}>Редактировать профиль</h1>
                 <div className={styles.modal_form}>
                     {!newName ? (
@@ -63,7 +62,7 @@ const Modal: React.FC<ModalProps> = ({
                         <input
                             className={styles.modal_input_address}
                             placeholder={'Адрес профиля'}
-                            value={newSlug}
+                            value={newSlug.trim()}
                             onChange={(e) => setNewSlug(e.target.value)}
                         />
                     </div>
@@ -88,7 +87,6 @@ const Modal: React.FC<ModalProps> = ({
                     </button>
                 </div>
             </div>
-            {/* </div> */}
         </div>
     )
 }

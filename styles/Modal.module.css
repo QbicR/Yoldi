@@ -193,7 +193,7 @@
     }
 }
 
-@media (max-height: 580px) {
+@media (max-height: 660px) {
     .modal {
         position: sticky;
     }
@@ -203,6 +203,8 @@
         width: 100%;
         border-radius: 0;
         border: none;
+        display: flex;
+        flex-direction: column;
     }
 
     .btns {

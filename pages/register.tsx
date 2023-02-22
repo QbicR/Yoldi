@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import useSWRMutation from 'swr/mutation'
 import { useRouter } from 'next/router'
-import useSWR, { useSWRConfig } from 'swr'
 import Head from 'next/head'
 
 import AuthButton from '@/components/UI/button/AuthButton'
 import AuthInput from '@/components/UI/Input/AuthInput'
-import { fetcher } from '@/utils/fetcher'
 import styles from '../styles/Auth.module.css'
 
 const Register: React.FC = () => {
@@ -15,45 +14,39 @@ const Register: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<string>('')
     const [hidePassword, setHidePassword] = useState<boolean>(true)
+    const [response, setResponse] = useState<any>({})
 
     const { push } = useRouter()
-    const { mutate } = useSWRConfig()
+
+    const sendResuest = async (url: string, { arg }: any) => {
+        await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', accept: 'application/json' },
+            body: JSON.stringify(arg),
+        }).then(async (res) => setResponse(await res.json()))
+    }
+
+    const { trigger } = useSWRMutation(
+        'https://frontend-test-api.yoldi.agency/api/auth/sign-up',
+        sendResuest,
+    )
 
     const register = () => {
-        mutate(
-            'https://frontend-test-api.yoldi.agency/api/auth/sign-up',
-            fetcher('https://frontend-test-api.yoldi.agency/api/auth/sign-up', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', accept: 'application/json' },
-                body: JSON.stringify({ email, name, password }),
-            }),
-        )
+        trigger({ email, name, password })
         setLoading(true)
     }
 
-    const { data } = useSWR('https://frontend-test-api.yoldi.agency/api/auth/sign-up', fetcher)
-
-    console.log(data)
-
-    const dataMessage =
-        data?.message &&
-        data?.message !== 'Unauthorized' &&
-        data?.message !== 'Cannot GET /api/auth/sign-up'
-
     useEffect(() => {
-        if (data?.value) {
+        if (response?.value) {
+            localStorage.setItem('token', response.value)
             setError('')
-            localStorage.setItem('token', data.value)
-            push('/')
+            setLoading(false)
+            push('/users')
+        } else {
+            setError(response.message)
             setLoading(false)
         }
-
-        if (dataMessage) {
-            setError(data.message)
-            setPassword('')
-            setLoading(false)
-        }
-    }, [data])
+    }, [response])
 
     return (
         <>
@@ -61,6 +54,7 @@ const Register: React.FC = () => {
                 <title>Регистрация в Yoldi Agency</title>
                 <meta property="og:title" content="Регистрация в Yoldi Agency" key="title" />
             </Head>
+
             <div className={styles.auth_page}>
                 <div className={styles.register_form}>
                     <h1 className={styles.auth_title}>

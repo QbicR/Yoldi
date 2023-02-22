@@ -19,4 +19,5 @@ export type UserType = {
     description: string
     image: ImageType
     cover: ImageType
+    statusCode?: number
 }

@@ -10,6 +10,7 @@ import { fetcherWithToken } from '@/utils/fetcherWithToken'
 const Header: React.FC = () => {
     const [token, setToken] = useState<string | null>()
     const [user, setUser] = useState<UserType>()
+    const [letter, setLetter] = useState<string>('')
 
     const { push, route } = useRouter()
 
@@ -22,7 +23,10 @@ const Header: React.FC = () => {
     )
 
     useEffect(() => {
-        setUser(data)
+        if (data) {
+            setUser(data)
+            setLetter(data?.name)
+        }
     }, [data])
 
     const sendResuest = async (url: string) => {
@@ -114,7 +118,7 @@ const Header: React.FC = () => {
                                 className={styles.user_icon}
                                 style={{ backgroundImage: `url(${user?.image?.url})` }}
                             >
-                                {!user?.image?.url ? user?.image?.url : user?.name[0]}
+                                {!user?.image?.url && user?.name[0]}
                             </div>
                         </>
                     </div>

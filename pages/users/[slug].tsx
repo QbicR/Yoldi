@@ -112,7 +112,7 @@ const User: React.FC<UserProps> = ({ user }) => {
             }),
         )
         setVisible(!visible)
-        push(`/users/${newSlug}`)
+        push(`/users/${newSlug.trim()}`)
     }
 
     const logOut = () => {

@@ -6,8 +6,8 @@
 
 .contaiter {
     height: calc(100vh - 180px);
-    width: 800px;
-    margin: 50px 20px;
+    width: 810px;
+    margin: 50px 10px 50px 20px;
 }
 
 .contaiter h1 {

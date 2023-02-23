@@ -51,6 +51,13 @@ const Register: React.FC = () => {
         }
     }, [response])
 
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        if (token !== null) {
+            push('/users')
+        }
+    }, [])
+
     return (
         <>
             <Head>

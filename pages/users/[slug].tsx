@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
+import useSWR, { useSWRConfig } from 'swr'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 
+import { fetcherWithToken } from '@/utils/fetcherWithToken'
 import styles from '../../styles/User.module.css'
 import Modal from '@/components/UI/modal/Modal'
-import { UserType } from '@/types/types'
-import useSWR, { useSWRConfig } from 'swr'
-import { fetcherWithToken } from '@/utils/fetcherWithToken'
-import ErrorPage from '../404'
 import { fetcher } from '@/utils/fetcher'
+import { UserType } from '@/types/types'
+import ErrorPage from '../404'
 
 type ContextType = {
     params: { slug: string }
@@ -35,7 +35,7 @@ const User: React.FC<UserProps> = ({ user }) => {
     const [newName, setNewName] = useState<string>('')
     const [newSlug, setNewSlug] = useState<string>('')
     const [newDesc, setNewDesc] = useState<string>('')
-    const [crutch, setСrutch] = useState(false)
+    const [crutch, setСrutch] = useState<boolean>(false)
 
     const [image, setImage] = useState()
 
@@ -120,11 +120,13 @@ const User: React.FC<UserProps> = ({ user }) => {
         push('/login')
     }
 
-    // const changePhoto = () => {
+    // const changePhoto = async (image: any) => {
     //     const fileData = new FormData()
     //     fileData.append('file', image)
 
-    //     mutate(
+    //     console.log(image)
+
+    //     await mutate(
     //         `https://frontend-test-api.yoldi.agency/api/image`,
     //         fetcher(`https://frontend-test-api.yoldi.agency/api/image`, {
     //             method: 'POST',
@@ -149,7 +151,10 @@ const User: React.FC<UserProps> = ({ user }) => {
             </Head>
 
             {!crutch && (
-                <div className={styles.user_page}>
+                <div
+                    className={styles.user_page}
+                    style={visible ? { height: 'calc(100vh - 80px)', overflow: 'hidden' } : {}}
+                >
                     <div
                         className={styles.profile_background}
                         style={{ backgroundImage: `url(${user?.cover?.url})` }}
@@ -162,7 +167,7 @@ const User: React.FC<UserProps> = ({ user }) => {
                                             type="file"
                                             name="file"
                                             hidden
-                                            // onChange={(e) => setImage(e.target.files[0])}
+                                            // onChange={(e) => changePhoto(e.target.files[0])}
                                         />
                                         <div className={styles.input_file}>
                                             <svg

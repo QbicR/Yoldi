@@ -104,6 +104,17 @@
     resize: none;
 }
 
+.modal_textarea::-webkit-scrollbar {
+    border-radius: 5px;
+    background-color: #f3f3f3;
+    width: 10px;
+}
+
+.modal_textarea::-webkit-scrollbar-thumb {
+    background-color: #d3d3d3;
+    border-radius: 5px;
+}
+
 .modal_input:focus,
 .modal_input_address:focus,
 .modal_textarea:focus {

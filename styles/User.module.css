@@ -1,6 +1,8 @@
 .user_page {
     display: block;
-    /* height: calc(100vh - 80px); */
+    /* height: max-content; */
+    /* overflow: auto;
+    scroll-snap-type: x; */
 }
 
 .profile_background {
@@ -144,7 +146,6 @@
 .user_email {
     max-width: 600px;
     height: 26px;
-    font-style: normal;
     font-weight: 400;
     font-size: 16px;
     line-height: 26px;
@@ -160,8 +161,7 @@
     margin-top: 30px;
     margin-bottom: 60px;
     white-space: pre-line;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    word-wrap: break-word;
 }
 
 @media (max-width: 480px) {

@@ -25,16 +25,14 @@
 }
 
 .users_list::-webkit-scrollbar {
+    border-radius: 5px;
+    background-color: #f3f3f3;
     width: 10px;
-}
-
-.users_list::-webkit-scrollbar-track {
-    border-radius: 20px;
 }
 
 .users_list::-webkit-scrollbar-thumb {
     background-color: #d3d3d3;
-    border-radius: 20px;
+    border-radius: 5px;
 }
 
 .user_item {

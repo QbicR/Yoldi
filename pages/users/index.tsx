@@ -4,7 +4,6 @@ import { useRouter } from 'next/router'
 
 import styles from '../../styles/UsersList.module.css'
 import { fetcher } from '@/utils/fetcher'
-
 import { UserType } from '@/types/types'
 import Spinner from '@/components/UI/spinner/Spinner'
 

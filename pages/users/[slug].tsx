@@ -96,7 +96,7 @@ const User: React.FC<UserProps> = ({ user }) => {
         }
     }
 
-    const userData = { name: newName.trim(), slug: newSlug.trim(), description: newDesc.trim() }
+    const userData = { name: newName?.trim(), slug: newSlug?.trim(), description: newDesc?.trim() }
 
     const changeProfile = async () => {
         await mutate(

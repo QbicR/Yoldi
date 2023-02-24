@@ -17,4 +17,4 @@
 
 2. Ссылка на код на GitHub: https://github.com/QbicR/Yoldi
 
-3. Ссылка на Vercel с проектом: yoldi-qbicr.vercel.app
+3. Ссылка на Vercel с проектом: [yoldi-qbicr.vercel.app](https://yoldi-qbicr.vercel.app/users)

@@ -159,7 +159,7 @@ const User: React.FC<UserProps> = ({ user }) => {
                 body: JSON.stringify({ name: newName, slug: newSlug, imageId: id }),
             }),
         )
-        push(`/users/${newSlug.trim()}`)
+        await push(`/users/${newSlug}`)
     }
 
     const deleteCover = async () => {
@@ -175,7 +175,7 @@ const User: React.FC<UserProps> = ({ user }) => {
                 body: JSON.stringify({ name: newName, slug: newSlug, coverId: null }),
             }),
         )
-        push(`/users/${newSlug.trim()}`)
+        push(`/users/${newSlug}`)
     }
 
     const logOut = () => {

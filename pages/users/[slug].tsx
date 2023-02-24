@@ -9,6 +9,7 @@ import Modal from '@/components/UI/modal/Modal'
 import { fetcher } from '@/utils/fetcher'
 import { UserType } from '@/types/types'
 import ErrorPage from '../404'
+import { uploadImage } from '@/utils/uploadImage'
 
 type ContextType = {
     params: { slug: string }
@@ -112,6 +113,68 @@ const User: React.FC<UserProps> = ({ user }) => {
             }),
         )
         setVisible(!visible)
+        push(`/users/${newSlug}`)
+    }
+
+    const changeCover = async (image: any) => {
+        const fileData = new FormData()
+        fileData.append('file', image, image.name)
+
+        let id
+        const response: any = uploadImage(fileData)
+        await response.then((res: any) => (id = res.id))
+
+        await mutate(
+            `https://frontend-test-api.yoldi.agency/api/profile`,
+            fetcher(`https://frontend-test-api.yoldi.agency/api/profile`, {
+                method: 'PATCH',
+                headers: {
+                    accept: 'application/json',
+                    'X-API-KEY': String(token),
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name: newName, slug: newSlug, coverId: id }),
+            }),
+        )
+        push(`/users/${newSlug}`)
+    }
+
+    const changeImage = async (image: any) => {
+        const fileData = new FormData()
+        fileData.append('file', image, image.name)
+
+        let id
+        const response: any = uploadImage(fileData)
+        await response.then((res: any) => (id = res.id))
+
+        await mutate(
+            `https://frontend-test-api.yoldi.agency/api/profile`,
+            fetcher(`https://frontend-test-api.yoldi.agency/api/profile`, {
+                method: 'PATCH',
+                headers: {
+                    accept: 'application/json',
+                    'X-API-KEY': String(token),
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name: newName, slug: newSlug, imageId: id }),
+            }),
+        )
+        push(`/users/${newSlug.trim()}`)
+    }
+
+    const deleteCover = async () => {
+        await mutate(
+            `https://frontend-test-api.yoldi.agency/api/profile`,
+            fetcher(`https://frontend-test-api.yoldi.agency/api/profile`, {
+                method: 'PATCH',
+                headers: {
+                    accept: 'application/json',
+                    'X-API-KEY': String(token),
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ name: newName, slug: newSlug, coverId: null }),
+            }),
+        )
         push(`/users/${newSlug.trim()}`)
     }
 
@@ -119,25 +182,6 @@ const User: React.FC<UserProps> = ({ user }) => {
         localStorage.removeItem('token')
         push('/login')
     }
-
-    // const changePhoto = async (image: any) => {
-    //     const fileData = new FormData()
-    //     fileData.append('file', image)
-
-    //     console.log(image)
-
-    //     await mutate(
-    //         `https://frontend-test-api.yoldi.agency/api/image`,
-    //         fetcher(`https://frontend-test-api.yoldi.agency/api/image`, {
-    //             method: 'POST',
-    //             headers: {
-    //                 accept: 'application/json',
-    //                 'Content-Type': 'multipart/form-data',
-    //             },
-    //             body: fileData,
-    //         }),
-    //     )
-    // }
 
     if (user.statusCode === 404) {
         return <ErrorPage />
@@ -167,7 +211,7 @@ const User: React.FC<UserProps> = ({ user }) => {
                                             type="file"
                                             name="file"
                                             hidden
-                                            // onChange={(e) => changePhoto(e.target.files[0])}
+                                            onChange={(e) => changeCover(e.target.files[0])}
                                         />
                                         <div className={styles.input_file}>
                                             <svg
@@ -198,7 +242,7 @@ const User: React.FC<UserProps> = ({ user }) => {
                                         </div>
                                     </label>
                                 ) : (
-                                    <div className={styles.input_file}>
+                                    <div className={styles.input_file} onClick={deleteCover}>
                                         <svg
                                             width="18"
                                             height="20"
@@ -241,7 +285,7 @@ const User: React.FC<UserProps> = ({ user }) => {
                                         type="file"
                                         name="file"
                                         hidden
-                                        // onChange={(e) => console.log(e.target.files[0])}
+                                        onChange={(e) => changeImage(e.target.files[0])}
                                     />
                                     <div className={styles.input_icon}>
                                         <svg

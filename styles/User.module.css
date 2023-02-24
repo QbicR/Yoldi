@@ -1,8 +1,5 @@
 .user_page {
     display: block;
-    /* height: max-content; */
-    /* overflow: auto;
-    scroll-snap-type: x; */
 }
 
 .profile_background {
@@ -55,6 +52,9 @@
 }
 
 .user_img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     top: 230px;
     width: 100px;
@@ -64,9 +64,6 @@
     border-radius: 50%;
     background-size: cover;
     background-repeat: no-repeat;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .user_logo {
@@ -81,11 +78,11 @@
 
 .input_icon {
     display: none;
+    justify-content: center;
+    align-items: center;
     width: 100px;
     height: 100px;
     border-radius: 50%;
-    justify-content: center;
-    align-items: center;
     cursor: pointer;
 }
 

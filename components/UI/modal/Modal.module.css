@@ -122,7 +122,7 @@
     outline: #838383;
 }
 
-.btns {
+.btns_area {
     display: flex;
     gap: 10px;
     margin-top: 20px;
@@ -168,16 +168,6 @@
     transition: 0.25s;
 }
 
-/* @media (max-width: 480px) {
-    .user_info {
-        display: block;
-    }
-
-    .user_email {
-        margin-bottom: 10px;
-    }
-} */
-
 @media (max-width: 600px) or (max-height: 660px) {
     .modal {
         position: absolute;
@@ -190,14 +180,14 @@
     }
 
     .modal_active {
+        display: flex;
+        flex-direction: column;
         position: absolute;
         top: 0;
         height: calc(100vh - 80px);
         width: 100%;
         border-radius: 0;
         border: none;
-        display: flex;
-        flex-direction: column;
     }
 
     .btns {
@@ -211,30 +201,3 @@
         height: 284px;
     }
 }
-
-/* @media (max-height: 660px) {
-    .modal {
-        position: absolute;
-        top: 80px;
-    }
-
-    .modal_active {
-        height: calc(100vh - 80px);
-        width: 100%;
-        border-radius: 0;
-        border: none;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .btns {
-        padding: 0;
-        align-items: flex-end;
-        flex-grow: 1;
-        padding-bottom: 30px;
-    }
-
-    .modal_textarea {
-        height: 284px;
-    }
-} */

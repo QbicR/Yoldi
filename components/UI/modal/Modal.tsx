@@ -74,7 +74,7 @@ const Modal: React.FC<ModalProps> = ({
                         onChange={(e) => setNewDesc(e.target.value)}
                     />
                 </div>
-                <div className={styles.btns}>
+                <div className={styles.btns_area}>
                     <button onClick={closeModal} className={styles.cancel_btn}>
                         Отмена
                     </button>

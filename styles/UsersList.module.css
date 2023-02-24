@@ -50,6 +50,9 @@
 }
 
 .user_item_icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: absolute;
     left: 0;
     margin-right: 20px;
@@ -60,9 +63,6 @@
     border-radius: 50%;
     background-size: cover;
     background-repeat: no-repeat;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-weight: 400;
     font-size: 18px;
 }

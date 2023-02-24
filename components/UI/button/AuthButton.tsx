@@ -1,4 +1,5 @@
 import React from 'react'
+
 import styles from './AuthButton.module.css'
 
 interface AuthButtonProps {
@@ -17,6 +18,7 @@ const AuthButton: React.FC<AuthButtonProps> = (props) => {
                 <img
                     className={styles.spinner}
                     src="https://img.icons8.com/ios-filled/35/ffffff/iphone-spinner--v1.png"
+                    alt=""
                 />
             )}
         </button>

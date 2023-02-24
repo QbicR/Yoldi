@@ -7,7 +7,7 @@ import { fetcherWithToken } from '@/utils/fetcherWithToken'
 import styles from '../../styles/User.module.css'
 import Modal from '@/components/UI/modal/Modal'
 import { fetcher } from '@/utils/fetcher'
-import { UserType } from '@/types/types'
+import { ImageType, UserType } from '@/types/types'
 import ErrorPage from '../404'
 import { uploadImage } from '@/utils/uploadImage'
 
@@ -38,9 +38,7 @@ const User: React.FC<UserProps> = ({ user }) => {
     const [newDesc, setNewDesc] = useState<string>('')
     const [crutch, setСrutch] = useState<boolean>(false)
 
-    const [image, setImage] = useState()
-
-    const { push, route } = useRouter()
+    const { push } = useRouter()
     const { mutate } = useSWRConfig()
 
     useEffect(() => {
@@ -122,8 +120,8 @@ const User: React.FC<UserProps> = ({ user }) => {
         fileData.append('file', image, image.name)
 
         let id
-        const response: any = uploadImage(fileData)
-        await response.then((res: any) => (id = res.id))
+        const response = uploadImage(fileData)
+        await response.then((res: ImageType) => (id = res.id))
 
         await mutate(
             `https://frontend-test-api.yoldi.agency/api/profile`,
@@ -147,7 +145,7 @@ const User: React.FC<UserProps> = ({ user }) => {
 
         let id
         const response: any = uploadImage(fileData)
-        await response.then((res: any) => (id = res.id))
+        await response.then((res: ImageType) => (id = res.id))
 
         await mutate(
             `https://frontend-test-api.yoldi.agency/api/profile`,

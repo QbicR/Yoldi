@@ -116,7 +116,8 @@ const User: React.FC<UserProps> = ({ user }) => {
         push(`/users/${newSlug}`)
     }
 
-    const changeCover = async (image: any) => {
+    const changeCover = async (event: any) => {
+        const image = event.target.files[0]
         const fileData = new FormData()
         fileData.append('file', image, image.name)
 
@@ -139,7 +140,8 @@ const User: React.FC<UserProps> = ({ user }) => {
         push(`/users/${newSlug}`)
     }
 
-    const changeImage = async (image: any) => {
+    const changeImage = async (event: any) => {
+        const image = event.target.files[0]
         const fileData = new FormData()
         fileData.append('file', image, image.name)
 
@@ -211,7 +213,7 @@ const User: React.FC<UserProps> = ({ user }) => {
                                             type="file"
                                             name="file"
                                             hidden
-                                            onChange={(e) => changeCover(e.target.files[0])}
+                                            onChange={(e) => changeCover(e)}
                                         />
                                         <div className={styles.input_file}>
                                             <svg
@@ -285,7 +287,7 @@ const User: React.FC<UserProps> = ({ user }) => {
                                         type="file"
                                         name="file"
                                         hidden
-                                        onChange={(e) => changeImage(e.target.files[0])}
+                                        onChange={(e) => changeImage(e)}
                                     />
                                     <div className={styles.input_icon}>
                                         <svg

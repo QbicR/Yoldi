@@ -190,7 +190,7 @@
         border: none;
     }
 
-    .btns {
+    .btns_area {
         padding: 0;
         align-items: flex-end;
         flex-grow: 1;

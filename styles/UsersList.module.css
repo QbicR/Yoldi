@@ -99,6 +99,10 @@
 }
 
 @media (max-width: 480px) {
+    .user_item {
+        height: 72px;
+    }
+
     .user_name {
         top: 10px;
         max-width: 480px;

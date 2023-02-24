@@ -144,7 +144,7 @@ const User: React.FC<UserProps> = ({ user }) => {
         fileData.append('file', image, image.name)
 
         let id
-        const response: any = uploadImage(fileData)
+        const response = uploadImage(fileData)
         await response.then((res: ImageType) => (id = res.id))
 
         await mutate(

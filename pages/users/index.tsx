@@ -10,10 +10,7 @@ import Spinner from '@/components/UI/spinner/Spinner'
 const UsersList: React.FC = () => {
     const { push } = useRouter()
 
-    const { data: users } = useSWR<UserType[]>(
-        'https://frontend-test-api.yoldi.agency/api/user',
-        fetcher,
-    )
+    const { data: users } = useSWR<UserType[]>('/user', fetcher)
 
     if (!users) {
         return <Spinner />
@@ -24,7 +21,7 @@ const UsersList: React.FC = () => {
             <div className={styles.contaiter}>
                 <h1>Список аккаунтов</h1>
                 <div className={styles.users_list}>
-                    {users?.map((user) => (
+                    {users.map((user) => (
                         <div
                             className={styles.user_item}
                             key={user.slug}

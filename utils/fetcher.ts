@@ -1,2 +1,2 @@
 export const fetcher = (url: string, init?: RequestInit) =>
-    fetch(url, init).then((res) => res.json())
+    fetch('https://frontend-test-api.yoldi.agency/api' + url, init).then((res) => res.json())

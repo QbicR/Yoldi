@@ -32,8 +32,10 @@ const Auth: React.FC = () => {
     )
 
     const login = () => {
+        const userData = { email: email.trim(), password: password.trim() }
+
         setLoading(true)
-        trigger({ email, password })
+        trigger(userData)
     }
 
     useEffect(() => {
@@ -51,8 +53,7 @@ const Auth: React.FC = () => {
     }, [response])
 
     useEffect(() => {
-        const token = localStorage.getItem('token')
-        if (token !== null) {
+        if (localStorage.getItem('token') !== null) {
             push('/users')
         }
     }, [])
@@ -82,7 +83,7 @@ const Auth: React.FC = () => {
                             />
                         </svg>
                         <AuthInput
-                            onChange={(e) => setEmail(e.target.value.trim())}
+                            onChange={(e) => setEmail(e.target.value)}
                             placeholder={'E-mail'}
                             type="text"
                             value={email}
@@ -103,7 +104,7 @@ const Auth: React.FC = () => {
                             />
                         </svg>
                         <AuthInput
-                            onChange={(e) => setPassword(e.target.value.trim())}
+                            onChange={(e) => setPassword(e.target.value)}
                             placeholder={'Пароль'}
                             type={hidePassword ? 'password' : 'text'}
                             value={password}

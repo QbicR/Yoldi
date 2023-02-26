@@ -1,11 +1,12 @@
 import React from 'react'
+
 import styles from './AuthInput.module.css'
 
 interface InputProps {
     placeholder: string
-    value?: string
-    onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-    type?: string
+    value: string
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+    type: string
 }
 
 const AuthInput: React.FC<InputProps> = (props) => {

@@ -1,8 +1,9 @@
-import { useRouter } from 'next/router'
 import React from 'react'
+import { useRouter } from 'next/router'
+
 import styles from '../styles/Error.module.css'
 
-const ErrorPage = () => {
+const ErrorPage: React.FC = () => {
     const { push } = useRouter()
 
     return (

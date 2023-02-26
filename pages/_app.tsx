@@ -1,9 +1,11 @@
-import Layout from '@/components/layout/Layout'
-import '@/styles/globals.css'
+import React from 'react'
 import type { AppProps } from 'next/app'
 import Head from 'next/head'
 
-const App = ({ Component, pageProps }: AppProps) => (
+import Layout from '@/components/layout/Layout'
+import '@/styles/globals.css'
+
+const App: React.FC<AppProps> = ({ Component, pageProps }) => (
     <Layout>
         <Head>
             <title>Yoldi Agency</title>

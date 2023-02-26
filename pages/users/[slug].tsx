@@ -41,16 +41,16 @@ const User: React.FC<UserProps> = ({ user }) => {
     const { push } = useRouter()
     const { mutate } = useSWRConfig()
 
-    useEffect(() => {
-        setСrutch((visible && window.innerWidth <= 600) || (visible && window.innerHeight <= 660))
-    }, [visible])
-
-    const { data, isValidating } = useSWR<UserType>(
-        `https://frontend-test-api.yoldi.agency/api/profile`,
-        (url: string) => fetcherWithToken(url, token),
+    const { data, isValidating } = useSWR<UserType>(`/profile`, (url: string) =>
+        fetcherWithToken(url, token),
     )
 
+    const guest = data?.slug !== user.slug
+
     useEffect(() => {
+        // Не получилось сделать это через CSS
+        setСrutch((visible && window.innerWidth <= 600) || (visible && window.innerHeight <= 660))
+
         const scrollY = document.body.style.top
         document.body.style.position = ''
         document.body.style.top = ''
@@ -64,12 +64,12 @@ const User: React.FC<UserProps> = ({ user }) => {
     useEffect(() => {
         if (token) {
             mutate(
-                `https://frontend-test-api.yoldi.agency/api/profile`,
-                fetcher(`https://frontend-test-api.yoldi.agency/api/profile`, {
+                `/profile`,
+                fetcher(`/profile`, {
                     method: 'GET',
                     headers: {
                         accept: 'application/json',
-                        'X-API-KEY': token!,
+                        'X-API-KEY': token,
                     },
                 }),
             )
@@ -84,23 +84,16 @@ const User: React.FC<UserProps> = ({ user }) => {
         }
     }, [isValidating])
 
-    const guest = data?.slug !== user.slug
-
-    const closeModal = () => {
-        setVisible(!visible)
-        if (data) {
-            setNewName(data?.name)
-            setNewSlug(data?.slug)
-            setNewDesc(data?.description)
-        }
-    }
-
-    const userData = { name: newName?.trim(), slug: newSlug?.trim(), description: newDesc?.trim() }
-
     const changeProfile = async () => {
+        const userData = {
+            name: newName?.trim(),
+            slug: newSlug?.trim(),
+            description: newDesc?.trim(),
+        }
+
         await mutate(
-            `https://frontend-test-api.yoldi.agency/api/profile`,
-            fetcher(`https://frontend-test-api.yoldi.agency/api/profile`, {
+            `/profile`,
+            fetcher(`/profile`, {
                 method: 'PATCH',
                 headers: {
                     accept: 'application/json',
@@ -114,8 +107,8 @@ const User: React.FC<UserProps> = ({ user }) => {
         push(`/users/${newSlug}`)
     }
 
-    const changeCover = async (event: any) => {
-        const image = event.target.files[0]
+    const changeCover = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const image = event.target.files?.[0]!
         const fileData = new FormData()
         fileData.append('file', image, image.name)
 
@@ -123,23 +116,25 @@ const User: React.FC<UserProps> = ({ user }) => {
         const response = uploadImage(fileData)
         await response.then((res: ImageType) => (id = res.id))
 
+        const userData = { name: newName, slug: newSlug, coverId: id }
+
         await mutate(
-            `https://frontend-test-api.yoldi.agency/api/profile`,
-            fetcher(`https://frontend-test-api.yoldi.agency/api/profile`, {
+            `/profile`,
+            fetcher(`/profile`, {
                 method: 'PATCH',
                 headers: {
                     accept: 'application/json',
                     'X-API-KEY': String(token),
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ name: newName, slug: newSlug, coverId: id }),
+                body: JSON.stringify(userData),
             }),
         )
         push(`/users/${newSlug}`)
     }
 
-    const changeImage = async (event: any) => {
-        const image = event.target.files[0]
+    const changeImage = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const image = event.target.files?.[0]!
         const fileData = new FormData()
         fileData.append('file', image, image.name)
 
@@ -147,35 +142,48 @@ const User: React.FC<UserProps> = ({ user }) => {
         const response = uploadImage(fileData)
         await response.then((res: ImageType) => (id = res.id))
 
+        const userData = { name: newName, slug: newSlug, imageId: id }
+
         await mutate(
-            `https://frontend-test-api.yoldi.agency/api/profile`,
-            fetcher(`https://frontend-test-api.yoldi.agency/api/profile`, {
+            `/profile`,
+            fetcher(`/profile`, {
                 method: 'PATCH',
                 headers: {
                     accept: 'application/json',
                     'X-API-KEY': String(token),
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ name: newName, slug: newSlug, imageId: id }),
+                body: JSON.stringify(userData),
             }),
         )
-        await push(`/users/${newSlug}`)
+        push(`/users/${newSlug}`)
     }
 
     const deleteCover = async () => {
+        const userData = { name: newName, slug: newSlug, coverId: null }
+
         await mutate(
-            `https://frontend-test-api.yoldi.agency/api/profile`,
-            fetcher(`https://frontend-test-api.yoldi.agency/api/profile`, {
+            `/profile`,
+            fetcher(`/profile`, {
                 method: 'PATCH',
                 headers: {
                     accept: 'application/json',
                     'X-API-KEY': String(token),
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ name: newName, slug: newSlug, coverId: null }),
+                body: JSON.stringify(userData),
             }),
         )
         push(`/users/${newSlug}`)
+    }
+
+    const closeModal = () => {
+        setVisible(!visible)
+        if (data) {
+            setNewName(data.name)
+            setNewSlug(data.slug)
+            setNewDesc(data.description)
+        }
     }
 
     const logOut = () => {
@@ -338,7 +346,11 @@ const User: React.FC<UserProps> = ({ user }) => {
 
                         <div className={styles.user_description}>{user.description}</div>
                         {!guest && (
-                            <button className={styles.change_info_btn} onClick={logOut}>
+                            <button
+                                tabIndex={-1}
+                                className={styles.change_info_btn}
+                                onClick={logOut}
+                            >
                                 <svg
                                     className={styles.user_info_btn_icon}
                                     width="19"

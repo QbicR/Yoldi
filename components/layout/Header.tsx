@@ -18,10 +18,7 @@ const Header: React.FC = () => {
         setToken(localStorage.getItem('token'))
     }, [route])
 
-    const { data } = useSWR<UserType>(
-        'https://frontend-test-api.yoldi.agency/api/profile',
-        (url: string) => fetcherWithToken(url, token),
-    )
+    const { data } = useSWR<UserType>('/profile', (url: string) => fetcherWithToken(url, token))
 
     useEffect(() => {
         if (data) {
@@ -35,7 +32,7 @@ const Header: React.FC = () => {
     const sendResuest = async (url: string) => {
         await fetch(url, {
             method: 'GET',
-            headers: { accept: 'application/json', 'X-API-KEY': token! },
+            headers: { accept: 'application/json', 'X-API-KEY': String(token) },
         }).then(async (res) => setUser(await res.json()))
     }
 

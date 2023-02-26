@@ -33,7 +33,9 @@ const Register: React.FC = () => {
     )
 
     const register = () => {
-        trigger({ email, name, password })
+        const userData = { email: email.trim(), name: name.trim(), password: password.trim() }
+
+        trigger(userData)
         setLoading(true)
     }
 
@@ -52,8 +54,7 @@ const Register: React.FC = () => {
     }, [response])
 
     useEffect(() => {
-        const token = localStorage.getItem('token')
-        if (token !== null) {
+        if (localStorage.getItem('token') !== null) {
             push('/users')
         }
     }, [])

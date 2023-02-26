@@ -35,6 +35,7 @@ const Register: React.FC = () => {
     const register = () => {
         const userData = { email: email.trim(), name: name.trim(), password: password.trim() }
 
+        setError('')
         trigger(userData)
         setLoading(true)
     }

@@ -34,6 +34,7 @@ const Auth: React.FC = () => {
     const login = () => {
         const userData = { email: email.trim(), password: password.trim() }
 
+        setError('')
         setLoading(true)
         trigger(userData)
     }

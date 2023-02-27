@@ -1,8 +1,8 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 
-import Footer from './Footer'
-import Header from './Header'
+import Footer from './footer/Footer'
+import Header from './header/Header'
 
 interface LayoutProps {
     children: JSX.Element[]

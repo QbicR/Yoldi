@@ -5,7 +5,7 @@ import useSWR from 'swr'
 
 import styles from './Header.module.css'
 import { UserType } from '@/types/types'
-import { fetcherWithToken } from '@/utils/fetcherWithToken'
+import { fetcher } from '@/utils/fetcher'
 
 const Header: React.FC = () => {
     const [token, setToken] = useState<string | null>()
@@ -18,7 +18,15 @@ const Header: React.FC = () => {
         setToken(localStorage.getItem('token'))
     }, [route])
 
-    const { data } = useSWR<UserType>('/profile', (url: string) => fetcherWithToken(url, token))
+    const { data } = useSWR<UserType>('/profile', () =>
+        fetcher(`/profile`, {
+            method: 'GET',
+            headers: {
+                accept: 'application/json',
+                'X-API-KEY': String(token),
+            },
+        }),
+    )
 
     useEffect(() => {
         if (data) {

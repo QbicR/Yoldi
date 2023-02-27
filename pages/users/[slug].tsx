@@ -3,7 +3,6 @@ import useSWR, { useSWRConfig } from 'swr'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 
-import { fetcherWithToken } from '@/utils/fetcherWithToken'
 import styles from '../../styles/User.module.css'
 import Modal from '@/components/UI/modal/Modal'
 import { fetcher } from '@/utils/fetcher'
@@ -31,24 +30,30 @@ interface UserProps {
 }
 
 const User: React.FC<UserProps> = ({ user }) => {
-    const [visible, setVisible] = useState<boolean>(false)
-    const [token, setToken] = useState<string | null>('')
     const [newName, setNewName] = useState<string>('')
     const [newSlug, setNewSlug] = useState<string>('')
     const [newDesc, setNewDesc] = useState<string>('')
+    const [visible, setVisible] = useState<boolean>(false)
+    const [token, setToken] = useState<string | null>('')
     const [crutch, setСrutch] = useState<boolean>(false)
 
     const { push } = useRouter()
     const { mutate } = useSWRConfig()
 
-    const { data, isValidating } = useSWR<UserType>(`/profile`, (url: string) =>
-        fetcherWithToken(url, token),
+    const { data, isValidating } = useSWR<UserType>(`/profile`, () =>
+        fetcher(`/profile`, {
+            method: 'GET',
+            headers: {
+                accept: 'application/json',
+                'X-API-KEY': String(token),
+            },
+        }),
     )
 
     const guest = data?.slug !== user.slug
 
     useEffect(() => {
-        // Не получилось сделать это через CSS
+        // Отображение содержимого страницы пользователя в зависимости от вида модального окна десктопное/мобильное
         setСrutch((visible && window.innerWidth <= 600) || (visible && window.innerHeight <= 660))
 
         const scrollY = document.body.style.top
@@ -86,9 +91,9 @@ const User: React.FC<UserProps> = ({ user }) => {
 
     const changeProfile = async () => {
         const userData = {
-            name: newName?.trim(),
-            slug: newSlug?.trim(),
-            description: newDesc?.trim(),
+            name: newName.trim(),
+            slug: newSlug.trim(),
+            description: newDesc.trim(),
         }
 
         await mutate(
@@ -104,7 +109,7 @@ const User: React.FC<UserProps> = ({ user }) => {
             }),
         )
         setVisible(!visible)
-        push(`/users/${newSlug}`)
+        push(`/users/${newSlug.trim()}`)
     }
 
     const changeCover = async (event: React.ChangeEvent<HTMLInputElement>) => {

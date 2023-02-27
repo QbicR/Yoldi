@@ -1,16 +1,25 @@
 import React from 'react'
-import useSWR from 'swr'
 import { useRouter } from 'next/router'
 
 import styles from '../../styles/UsersList.module.css'
-import { fetcher } from '@/utils/fetcher'
 import { UserType } from '@/types/types'
 import Spinner from '@/components/UI/spinner/Spinner'
 
-const UsersList: React.FC = () => {
-    const { push } = useRouter()
+export const getServerSideProps = async () => {
+    const res = await fetch(`https://frontend-test-api.yoldi.agency/api/user`)
+    const data: UserType[] = await res.json()
 
-    const { data: users } = useSWR<UserType[]>('/user', fetcher)
+    return {
+        props: { users: data },
+    }
+}
+
+interface UsersProps {
+    users: UserType[]
+}
+
+const UsersList: React.FC<UsersProps> = ({ users }) => {
+    const { push } = useRouter()
 
     if (!users) {
         return <Spinner />

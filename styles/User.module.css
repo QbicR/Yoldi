@@ -129,7 +129,7 @@
 }
 
 .user_name {
-    width: 230px;
+    width: calc(100vw - 260px);
     height: 42px;
     font-weight: 500;
     font-size: 30px;
@@ -166,19 +166,17 @@
         display: block;
     }
 
+    .user_name {
+        width: 100%;
+    }
+
     .user_email {
         margin-bottom: 10px;
     }
 }
 
-@media (min-width: 700px) {
-    .user_name {
-        width: 400px;
-    }
-}
-
 @media (min-width: 800px) {
     .user_name {
-        width: 500px;
+        width: 550px;
     }
 }
